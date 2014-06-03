@@ -1,0 +1,11 @@
+plugin.tx_dmailunsubscribe_pi1 {
+  _CSS_DEFAULT_STYLE (
+    .tx-dmailunsubscribe-failure { margin-bottom:2em; border:#FFCC00 1px solid; padding:2px; background:#FFEEAA url(../typo3conf/ext/dmail_unsubscribe/res/image/fade_nok.jpg) left bottom repeat-x;; }
+    .tx-dmailunsubscribe-success { margin-bottom:2em; border:#00CC00 1px solid; padding:2px; background:#D4F6D4 url(../typo3conf/ext/dmail_unsubscribe/res/image/fade_ok.jpg) left bottom repeat-x; }
+    .tx-dmailunsubscribe-table, .tx-dmailunsubscribe-tbody, .tx-dmailunsubscribe-td { border-color:transparent; background-color:transparent; }
+    .tx-dmailunsubscribe-failureicon, .tx-dmailunsubscribe-successicon { width:70px; height:70px; }
+    .tx-dmailunsubscribe-failureicon { background:transparent url(../typo3conf/ext/dmail_unsubscribe/res/icon/nok.png) center center no-repeat; }
+    .tx-dmailunsubscribe-successicon { background:transparent url(../typo3conf/ext/dmail_unsubscribe/res/icon/ok.png) center center no-repeat; }
+    .tx-dmailunsubscribe-dlgtext { padding:5px; padding-left:15px; }
+  )
+}

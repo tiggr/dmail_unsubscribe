@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;tx_dmailunsubscribe_pi1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="unsubscription_failed">It wasn't possible to unsubscribe you. We apologize for the inconvenience.</label>
+			<label index="unsubscription_successful">Your subscription under the e-mail address %s has been successfully deactivated.</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+		<label index="unsubscription_failed">No podemos darle de baja en este momento por razones técnicas. Disculpen las molestias.</label>
+		<label index="unsubscription_successful">Su subscribción con la dirección %s ha sido desactivada correctamente.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="unsubscription_failed">Ihre Anmeldung konnte nicht deaktiviert werden. Bitte entschuldigen Sie die Unannehmlichkeiten.</label>
+			<label index="unsubscription_successful">Ihre Anmeldung unter der e-Mailadresse %s wurde erfolgreich deaktiviert.</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+      <label index="unsubscription_failed">Het uitschrijven is helaas niet gelukt. Excuses voor het ongemak.</label>
+      <label index="unsubscription_successful">Uw aanmelding met het e-mail adres %s is succesvol gedeactiveerd.</label>
+    </languageKey>
+	</data>
+</T3locallang>
