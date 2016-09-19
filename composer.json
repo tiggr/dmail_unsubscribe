@@ -1,0 +1,22 @@
+{
+  "name": "davitec/dmail-unsubscribe",
+  "type": "typo3-cms-extension",
+  "description": "Link zum Glasschadenportal",
+  "homepage": "https://matthies.de",
+  "license": [
+    "GPL-2.0+"
+  ],
+  "require": {
+    "typo3/cms-core": ">=7.6"
+  },
+  "replace": {
+    "dmail_unsubscribe": "self.version"
+  },
+  "autoload": {
+    "classmap": [
+      "pi1"
+    ]
+  },
+  "extra": {
+  }
+}
