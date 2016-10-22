@@ -27,7 +27,6 @@
  * Hint: use extdeveval to insert/update function index above.
  */
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
 
 /**
  * Plugin 'Dmail unsubscription' for the 'dmail_unsubscribe' extension.
@@ -36,7 +35,7 @@ require_once(PATH_tslib . 'class.tslib_pibase.php');
  * @package    TYPO3
  * @subpackage    tx_dmailunsubscribe
  */
-class tx_dmailunsubscribe_pi1 extends tslib_pibase
+class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
 
     var $prefixId = 'tx_dmailunsubscribe_pi1';        // Same as class name
@@ -125,11 +124,11 @@ class tx_dmailunsubscribe_pi1 extends tslib_pibase
 
     function checkPrecondition()
     {
-        $cmd = t3lib_div::_GP('cmd'); // unsubscribe
-        $sRid = t3lib_div::_GP('rid');
+        $cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd'); // unsubscribe
+        $sRid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('rid');
         $sRid = str_replace(array('fe_users', 'tt_address'), array('f', 't'), $sRid);
-        $aRid = t3lib_div::trimExplode('_', $sRid, 1); // ###SYS_TABLE_NAME###_###USER_uid###
-        $aC = t3lib_div::_GP('aC'); // ###SYS_AUTHCODE###
+        $aRid = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('_', $sRid, 1); // ###SYS_TABLE_NAME###_###USER_uid###
+        $aC = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('aC'); // ###SYS_AUTHCODE###
 
         // check command
         if ($cmd !== 'unsubscribe') {
@@ -166,7 +165,7 @@ class tx_dmailunsubscribe_pi1 extends tslib_pibase
         if (isset($this->conf['authCode_fieldList'])) {
             $authCode_fieldList = $this->conf['authCode_fieldList'];
         }
-        $authCode = t3lib_div::stdAuthCode($tempRow, $authCode_fieldList);
+        $authCode = \TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode($tempRow, $authCode_fieldList);
         if ($authCode !== $aC) {
             return false;
         }
