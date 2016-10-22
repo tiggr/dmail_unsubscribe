@@ -193,7 +193,3 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     }
 
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dmail_unsubscribe/pi1/class.tx_dmailunsubscribe_pi1.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dmail_unsubscribe/pi1/class.tx_dmailunsubscribe_pi1.php']);
-}
