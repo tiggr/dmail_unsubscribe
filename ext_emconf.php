@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array (
 	'description' => 'Allows a direct mail recipient to unsubscribe himself from receiving direct mail newsletters. The recipient might come from fe_users or tt_address table.',
 	'category' => 'plugin',
 	'shy' => 0,
-	'version' => '7.0',
+	'version' => '7.6.0',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -32,13 +32,13 @@ $EM_CONF[$_EXTKEY] = array (
 	'author_company' => 'Synac Technology, S.L.',
 	'CGLcompliance' => NULL,
 	'CGLcompliance_note' => NULL,
-	'constraints' => 
+	'constraints' =>
 	array (
-		'depends' => 
+		'depends' =>
 		array (
 		),
 		'conflicts' => '',
-		'suggests' => 
+		'suggests' =>
 		array (
 		),
 	),
