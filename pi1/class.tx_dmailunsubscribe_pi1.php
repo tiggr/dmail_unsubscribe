@@ -27,7 +27,6 @@
  * Hint: use extdeveval to insert/update function index above.
  */
 
-
 /**
  * Plugin 'Dmail unsubscription' for the 'dmail_unsubscribe' extension.
  *
@@ -42,13 +41,13 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     var $scriptRelPath = 'pi1/class.tx_dmailunsubscribe_pi1.php';    // Path to this script relative to the extension dir.
     var $extKey = 'dmail_unsubscribe';    // The extension key.
     var $receiverTable = ''; // table where receiver record comes from
-    var $aReceiver = array(); // receiver record (from fe_users or tt_address)
+    var $aReceiver = []; // receiver record (from fe_users or tt_address)
 
     /**
      * The main method of the PlugIn
      *
-     * @param    string $content : The PlugIn content
-     * @param    array $conf : The PlugIn configuration
+     * @param string $content : The PlugIn content
+     * @param array $conf : The PlugIn configuration
      * @return    The content that is displayed on the website
      */
     function main($content, $conf)
@@ -80,10 +79,10 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
             // update fe_users record
             if ($this->receiverTable === 'fe_users') {
-                $rec = array(
-                    'tstamp' => time(),
-                    'module_sys_dmail_newsletter' => 0
-                );
+                $rec = [
+                    'tstamp'                      => time(),
+                    'module_sys_dmail_newsletter' => 0,
+                ];
                 $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
                     $this->receiverTable,
                     'uid=' . $uid,
@@ -93,10 +92,10 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
             // update tt_address record
             if ($this->receiverTable === 'tt_address') {
-                $rec = array(
+                $rec = [
                     'tstamp' => time(),
-                    'hidden' => 1
-                );
+                    'hidden' => 1,
+                ];
                 $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
                     $this->receiverTable,
                     'uid=' . $uid,
@@ -126,8 +125,9 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         $cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd'); // unsubscribe
         $sRid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('rid');
-        $sRid = str_replace(array('fe_users', 'tt_address'), array('f', 't'), $sRid);
-        $aRid = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('_', $sRid, 1); // ###SYS_TABLE_NAME###_###USER_uid###
+        $sRid = str_replace(['fe_users', 'tt_address'], ['f', 't'], $sRid);
+        $aRid = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('_', $sRid,
+            1); // ###SYS_TABLE_NAME###_###USER_uid###
         $aC = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('aC'); // ###SYS_AUTHCODE###
 
         // check command
@@ -157,7 +157,7 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         //check authentication code
-        $tempRow = array();
+        $tempRow = [];
         foreach ($this->aReceiver as $k => $v) {
             $tempRow[$k] = htmlspecialchars($v);
         }
@@ -180,8 +180,8 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $tableName,
             'uid=' . $uid . ' ' . $this->cObj->enableFields($tableName)
         );
-        $rows = array();
-        while ($row = $GLOBALS[TYPO3_DB]->sql_fetch_assoc($res)) {
+        $rows = [];
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $rows[] = $row;
         }
         $GLOBALS['TYPO3_DB']->sql_free_result($res);
