@@ -21,6 +21,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
+
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
@@ -42,6 +48,7 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     var $extKey = 'dmail_unsubscribe';    // The extension key.
     var $receiverTable = ''; // table where receiver record comes from
     var $aReceiver = []; // receiver record (from fe_users or tt_address)
+    var $templateCode = '';
 
     /**
      * The main method of the PlugIn
@@ -59,23 +66,28 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->pi_loadLL();
         $this->pi_USER_INT_obj = 1;
 
+        $templateService = new MarkerBasedTemplateService();
+        $fileSanitizer = new FilePathSanitizer();
+
         // init template
-        $file = 'EXT:dmail_unsubscribe/res/html/template.html';
+        $file = $fileSanitizer->sanitize('EXT:dmail_unsubscribe/res/html/template.html');
         if (isset($this->conf['template'])) {
             $file = $this->conf['template'];
         }
-        $this->templateCode = $this->cObj->fileResource($file);
+        $this->templateCode = file_get_contents($file);
         if (!$this->templateCode) {
             return 'Please define a template';
         }
 
         if (!$this->checkPrecondition()) {
             $aMarker['ll_unsubscription_failed'] = $this->pi_getLL('unsubscription_failed');
-            $subPart = $this->cObj->getSubpart($this->templateCode, 'FAILURE_PANEL');
-            $content = $this->cObj->substituteMarkerArray($subPart, $aMarker, '###|###', 1);
+            $subPart = $templateService->getSubpart($this->templateCode, 'FAILURE_PANEL');
+            $content = $templateService->substituteMarkerArray($subPart, $aMarker, '###|###', 1);
         } else {
             // preconditions were met proceed with unsubscribing
             $uid = $this->aReceiver['uid'];
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->receiverTable);
+
 
             // update fe_users record
             if ($this->receiverTable === 'fe_users') {
@@ -83,12 +95,12 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     'tstamp'                      => time(),
                     'module_sys_dmail_newsletter' => 0,
                 ];
-                $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-                    $this->receiverTable,
-                    'uid=' . $uid,
-                    $rec
+                $res = $connection->update(
+                    $this->receiverTable, // table
+                    $rec, // value array
+                    [ 'uid' => $uid ] // where
                 );
-            };
+            }
 
             // update tt_address record
             if ($this->receiverTable === 'tt_address') {
@@ -96,12 +108,12 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     'tstamp' => time(),
                     'hidden' => 1,
                 ];
-                $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-                    $this->receiverTable,
-                    'uid=' . $uid,
-                    $rec
+                $res = $connection->update(
+                    $this->receiverTable, // table
+                    $rec, // value array
+                    [ 'uid' => $uid ] // where
                 );
-            };
+            }
 
             // generate notification
             if ($res) {
@@ -109,12 +121,12 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $this->pi_getLL('unsubscription_successful'),
                     $this->aReceiver['email']
                 );
-                $subPart = $this->cObj->getSubpart($this->templateCode, 'SUCCESS_PANEL');
-                $content = $this->cObj->substituteMarkerArray($subPart, $aMarker, '###|###', 1);
+                $subPart = $templateService->getSubpart($this->templateCode, 'SUCCESS_PANEL');
+                $content = $templateService->substituteMarkerArray($subPart, $aMarker, '###|###', 1);
             } else {
                 $aMarker['ll_unsubscription_failed'] = $this->pi_getLL('unsubscription_failed');
-                $subPart = $this->cObj->getSubpart($this->templateCode, 'FAILURE_PANEL');
-                $content = $this->cObj->substituteMarkerArray($subPart, $aMarker, '###|###', 1);
+                $subPart = $templateService->getSubpart($this->templateCode, 'FAILURE_PANEL');
+                $content = $templateService->substituteMarkerArray($subPart, $aMarker, '###|###', 1);
             };
         };
 
@@ -142,7 +154,7 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($aRid[0] !== 'f' && $aRid[0] !== 't') {
             return false;
         }
-        $aRid[1] = intval($aRid[1]);
+        $aRid[1] = (int)$aRid[1];
         if ($aRid[0] === 'f') {
             // unsubscribe from table fe_users
             $this->receiverTable = 'fe_users';
@@ -175,16 +187,20 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
     function getRecord($tableName, $uid)
     {
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            '*',
-            $tableName,
-            'uid=' . $uid . ' ' . $this->cObj->enableFields($tableName)
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+
+        $res = $queryBuilder->select('*')
+            ->from($tableName)
+            ->where($queryBuilder->expr()->eq(
+                'uid', $queryBuilder->createNamedParameter($uid))
+            )
+            ->execute();
+
         $rows = [];
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+        while ($row = $res->fetch()) {
             $rows[] = $row;
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
+
         if (count($rows)) {
             return $rows[0];
         } else {
