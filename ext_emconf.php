@@ -4,7 +4,7 @@ $EM_CONF['dmail_unsubscribe'] = [
     'title'              => 'Direct mail unsubscription',
     'description'        => 'Allows a direct mail recipient to unsubscribe himself from receiving direct mail newsletters. The recipient might come from fe_users or tt_address table.',
     'category'           => 'plugin',
-    'version'            => '9.5.1',
+    'version'            => '10.4.0',
     'state'              => 'beta',
     'uploadfolder'       => 0,
     'createDirs'         => '',
@@ -17,6 +17,7 @@ $EM_CONF['dmail_unsubscribe'] = [
         [
             'depends'   =>
                 [
+                    'typo3'              => '9.5.0-10.4.99',
                 ],
             'conflicts' => '',
             'suggests'  =>

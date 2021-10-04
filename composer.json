@@ -7,7 +7,7 @@
     "GPL-2.0+"
   ],
   "require": {
-    "typo3/cms-core": ">=9.5"
+    "typo3/cms-core": ">=9.5 || >=10.4"
   },
   "replace": {
     "dmail_unsubscribe": "self.version"
@@ -18,5 +18,8 @@
     ]
   },
   "extra": {
+    "typo3/cms": {
+      "extension-key": "dmail_unsubscribe"
+    }
   }
 }
