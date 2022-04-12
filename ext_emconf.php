@@ -17,7 +17,7 @@ $EM_CONF['dmail_unsubscribe'] = [
         [
             'depends'   =>
                 [
-                    'typo3'              => '9.5.0-10.4.99',
+                    'typo3'              => '*',
                 ],
             'conflicts' => '',
             'suggests'  =>
