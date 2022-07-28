@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1659025502" source-language="en" datatype="plaintext" original="messages" date="2022-07-28T16:25:02Z" product-name="dmail_unsubscribe">
+		<header/>
+		<body>
+			<trans-unit id="tt_content.list_type_pi1" resname="tt_content.list_type_pi1" >
+				<source>Dmail unsubscription</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1659025346" source-language="en" datatype="plaintext" original="messages" date="2022-07-28T16:22:26Z" product-name="dmail_unsubscribe">
+		<header/>
+		<body>
+			<trans-unit id="unsubscription_failed" resname="unsubscription_failed" >
+				<source>It wasn't possible to unsubscribe you. We apologize for the inconvenience.</source>
+			</trans-unit>
+			<trans-unit id="unsubscription_successful" resname="unsubscription_successful" >
+				<source>Your subscription under the e-mail address %s has been successfully deactivated.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -59,7 +59,6 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     function main($content, $conf)
     {
-
         // init pi
         $this->conf = $conf;
         $this->pi_setPiVarDefaults();
