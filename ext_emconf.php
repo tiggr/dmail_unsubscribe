@@ -3,25 +3,15 @@
 $EM_CONF['dmail_unsubscribe'] = [
     'title' => 'Direct mail unsubscription',
     'description' => 'Allows a direct mail recipient to unsubscribe himself from receiving direct mail newsletters. The recipient might come from fe_users or tt_address table.',
-    'category' => 'plugin',
-    'version' => '10.4.0',
-    'state' => 'beta',
-    'uploadfolder' => 0,
-    'createDirs' => '',
-    'modify_tables' => '',
-    'clearcacheonload' => 0,
     'author' => 'Roman Buechler',
     'author_email' => 'rb@synac.com',
     'author_company' => 'Synac Technology, S.L.',
-    'constraints' =>
-        [
-            'depends' =>
-                [
-                    'typo3' => '*',
-                ],
-            'conflicts' => '',
-            'suggests' =>
-                [
-                ],
+    'category' => 'plugin',
+    'version' => '11.5.0',
+    'state' => 'beta',
+    'constraints' => [
+        'depends' => [
+            'typo3' => '*',
         ],
+    ],
 ];
