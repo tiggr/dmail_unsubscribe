@@ -1,4 +1,6 @@
 <?php
+
+use TYPO3\CMS\Core\Database\ConnectionPool;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,9 +24,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
@@ -40,15 +42,14 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  * @package    TYPO3
  * @subpackage    tx_dmailunsubscribe
  */
-class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+class tx_dmailunsubscribe_pi1 extends AbstractPlugin
 {
-
-    var $prefixId = 'tx_dmailunsubscribe_pi1';        // Same as class name
-    var $scriptRelPath = 'pi1/class.tx_dmailunsubscribe_pi1.php';    // Path to this script relative to the extension dir.
-    var $extKey = 'dmail_unsubscribe';    // The extension key.
-    var $receiverTable = ''; // table where receiver record comes from
-    var $aReceiver = []; // receiver record (from fe_users or tt_address)
-    var $templateCode = '';
+    public $prefixId = 'tx_dmailunsubscribe_pi1';        // Same as class name
+    public $scriptRelPath = 'pi1/class.tx_dmailunsubscribe_pi1.php';    // Path to this script relative to the extension dir.
+    public $extKey = 'dmail_unsubscribe';    // The extension key.
+    public $receiverTable = ''; // table where receiver record comes from
+    public $aReceiver = []; // receiver record (from fe_users or tt_address)
+    public $templateCode = '';
 
     /**
      * The main method of the PlugIn
@@ -57,7 +58,7 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param array $conf : The PlugIn configuration
      * @return    The content that is displayed on the website
      */
-    function main($content, $conf)
+    public function main($content, $conf)
     {
         // init pi
         $this->conf = $conf;
@@ -91,7 +92,7 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // update fe_users record
             if ($this->receiverTable === 'fe_users') {
                 $rec = [
-                    'tstamp'                      => time(),
+                    'tstamp' => time(),
                     'module_sys_dmail_newsletter' => 0,
                 ];
                 $res = $connection->update(
@@ -132,14 +133,17 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         return $this->pi_wrapInBaseClass($content);
     }
 
-    function checkPrecondition()
+    public function checkPrecondition()
     {
-        $cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd'); // unsubscribe
-        $sRid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('rid');
+        $cmd = GeneralUtility::_GP('cmd'); // unsubscribe
+        $sRid = GeneralUtility::_GP('rid');
         $sRid = str_replace(['fe_users', 'tt_address'], ['f', 't'], $sRid);
-        $aRid = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('_', $sRid,
-            1); // ###SYS_TABLE_NAME###_###USER_uid###
-        $aC = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('aC'); // ###SYS_AUTHCODE###
+        $aRid = GeneralUtility::trimExplode(
+            '_',
+            $sRid,
+            1
+        ); // ###SYS_TABLE_NAME###_###USER_uid###
+        $aC = GeneralUtility::_GP('aC'); // ###SYS_AUTHCODE###
 
         // check command
         if ($cmd !== 'unsubscribe') {
@@ -176,7 +180,7 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (isset($this->conf['authCode_fieldList'])) {
             $authCode_fieldList = $this->conf['authCode_fieldList'];
         }
-        $authCode = \TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode($tempRow, $authCode_fieldList);
+        $authCode = GeneralUtility::stdAuthCode($tempRow, $authCode_fieldList);
         if ($authCode !== $aC) {
             return false;
         }
@@ -184,14 +188,17 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         return true;
     }
 
-    function getRecord($tableName, $uid)
+    public function getRecord($tableName, $uid)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
 
         $res = $queryBuilder->select('*')
             ->from($tableName)
-            ->where($queryBuilder->expr()->eq(
-                'uid', $queryBuilder->createNamedParameter($uid))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid)
+                )
             )
             ->execute();
 
@@ -206,5 +213,4 @@ class tx_dmailunsubscribe_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             return false;
         }
     }
-
 }
