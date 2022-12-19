@@ -2,6 +2,11 @@
 
 use DirectMailTeam\DirectMail\Utility\AuthCodeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,11 +29,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
-use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
