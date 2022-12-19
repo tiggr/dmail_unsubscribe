@@ -1,5 +1,6 @@
 <?php
 
+use DirectMailTeam\DirectMail\Utility\AuthCodeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 /***************************************************************
  *  Copyright notice
@@ -180,12 +181,7 @@ class tx_dmailunsubscribe_pi1 extends AbstractPlugin
         if (isset($this->conf['authCode_fieldList'])) {
             $authCode_fieldList = $this->conf['authCode_fieldList'];
         }
-        $authCode = GeneralUtility::stdAuthCode($tempRow, $authCode_fieldList);
-        if ($authCode !== $aC) {
-            return false;
-        }
-
-        return true;
+        return AuthCodeUtility::validateAuthCode($aC, $tempRow, $authCode_fieldList);
     }
 
     public function getRecord($tableName, $uid)
